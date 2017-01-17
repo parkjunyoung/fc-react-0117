@@ -60,11 +60,16 @@ class Form extends React.Component {
         });
     }
 
+    submit(){
+        let message = this.state.textInput;
+        this.props.updateMessage(message);
+    }
+
     render() {
         return (
             <div>
                 <input type="text" onChange={ this.inputChange.bind(this) } />
-                <button onClick={ this.props.updateMessage }>입력전송</button>
+                <button onClick={ this.submit.bind(this)}>입력전송</button>
             </div>
         );
     }
@@ -72,8 +77,8 @@ class Form extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        updateMessage : () => dispatch( input("zzzz") )
-    }
+        updateMessage: (value) => dispatch(input(value))
+    };
 };
 Form = connect(undefined, mapDispatchToProps)(Form);
 
@@ -96,17 +101,17 @@ Answer = connect(mapStateToProps)(Answer);
 
 const App = () => {
     return (
-        <div>
-            <Form />
-            <Answer />
-        </div>
+        <Provider store = {store}>
+            <div>
+                <Form />
+                <Answer />
+            </div>
+        </Provider>
     );
 };
 
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
-    <Provider store = {store}>
         <App />
-    </Provider>
 , rootElement);
